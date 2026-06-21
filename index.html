@@ -486,7 +486,7 @@ footer{background:var(--w);border-top:0.5px solid var(--gl);padding:1.5rem 3rem;
       <div class="form-group"><label>Email</label><input type="email" placeholder="mario@rossisrl.it"></div>
       <div class="form-group">
         <label data-it>Mercato di interesse</label><label data-es>Mercado de interés</label>
-        <select>
+        <select id="f-mercato">
           <option value="">Venezuela</option>
           <option value="">Colombia</option>
           <option value="">México</option>
@@ -498,7 +498,7 @@ footer{background:var(--w);border-top:0.5px solid var(--gl);padding:1.5rem 3rem;
         </select>
       </div>
       <div class="form-group"><label data-it>Settore</label><label data-es>Sector</label>
-        <select>
+        <select id="f-settore">
           <option value="" data-it>Seleziona il tuo settore</option>
           <option value="" data-es>Selecciona tu sector</option>
           <option>Metalmeccanica / Maquinaria</option>
@@ -510,7 +510,7 @@ footer{background:var(--w);border-top:0.5px solid var(--gl);padding:1.5rem 3rem;
           <option data-es>Otro</option>
         </select>
       </div>
-      <div class="form-group"><label data-it>Il tuo progetto in due righe</label><label data-es>Tu proyecto en dos líneas</label><textarea placeholder="..."></textarea></div>
+      <div class="form-group"><label data-it>Il tuo progetto in due righe</label><label data-es>Tu proyecto en dos líneas</label><textarea id="f-msg" placeholder="..."></textarea></div>
       <button class="btn-form" id="fBtn" onclick="handleForm()">
         <span data-it>Invia e prenota la chiamata →</span>
         <span data-es>Enviar y agendar la llamada →</span>
@@ -549,11 +549,40 @@ function setL(l){
 }
 setL('it');
 
-function handleForm(){
+async function handleForm(){
   const btn=document.getElementById('fBtn');
-  btn.innerHTML='✓ Grazie — ti contattiamo entro 24h';
-  btn.style.background='#2D9B6F';
-  setTimeout(()=>window.open('https://scheduler.zoom.us/k-uet8ly/30-min-con-malecon-lab','_blank'),800);
+  const nome=document.getElementById('f-nome').value;
+  const azienda=document.getElementById('f-azienda').value;
+  const email=document.getElementById('f-email').value;
+  const mercato=document.getElementById('f-mercato').value;
+  const settore=document.getElementById('f-settore').value;
+  const msg=document.getElementById('f-msg').value;
+  if(!nome||!email){
+    btn.innerHTML='⚠ Inserisci nome e email / Ingresa nombre y email';
+    btn.style.background='#C04A38';
+    setTimeout(()=>{btn.innerHTML='<span data-it>Invia e prenota la chiamata →</span><span data-es>Enviar y agendar la llamada →</span>';btn.style.background='';},2000);
+    return;
+  }
+  btn.innerHTML='Invio in corso...';
+  btn.disabled=true;
+  try{
+    const res=await fetch('https://formspree.io/f/xaqgwvdn',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({nome,azienda,email,mercato,settore,messaggio:msg})
+    });
+    if(res.ok){
+      btn.innerHTML='✓ Grazie — ti contattiamo entro 24h';
+      btn.style.background='#2D9B6F';
+      setTimeout(()=>window.open('https://scheduler.zoom.us/k-uet8ly/30-min-con-malecon-lab','_blank'),1000);
+    } else {
+      throw new Error('error');
+    }
+  } catch(e){
+    btn.innerHTML='⚠ Errore — scrivi a info@maleconlab.com';
+    btn.style.background='#C04A38';
+    btn.disabled=false;
+  }
 }
 
 /* ── HERO CANVAS — rete di nodi con linee visibili ── */
