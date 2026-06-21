@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malecón Lab — America Latina. Ci siamo già.</title>
+<meta name="description" content="700 milioni di persone vogliono conoscerti. Il mercato che gli altri non osano ancora entrare — noi ci siamo già. Base italiana, rete locale reale in America Latina.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --w:#F8F5F0;--c:#007A85;--cd:#005C65;--cp:#E3F4F6;
+  --k:#0D0D0D;--g:#636363;--gl:#E2DDD6;
+  --coral:#C04A38;--oro:#B8913A;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--w);color:var(--k);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+[data-it],[data-es]{display:none}
+body.lit [data-it]{display:block}
+body.les [data-es]{display:block}
+span[data-it],span[data-es]{display:none}
+body.lit span[data-it]{display:inline}
+body.les span[data-es]{display:inline}
+
+nav{background:rgba(248,245,240,0.97);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--gl);padding:0 3rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:100}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:500;color:var(--k);text-decoration:none;letter-spacing:0.3px}
+.logo em{font-style:normal;color:var(--c)}
+.nav-r{display:flex;align-items:center;gap:2rem}
+.lang-sw{display:flex;border:0.5px solid var(--gl);border-radius:3px;overflow:hidden}
+.lang-sw button{background:none;border:none;font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:1.5px;cursor:pointer;padding:0.3rem 0.7rem;color:var(--g);transition:all 0.15s}
+.lang-sw button.on{background:var(--c);color:#fff;font-weight:600}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--g);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--c)}
+.ncta{background:var(--k);color:#fff;padding:0.5rem 1.4rem;font-size:0.7rem;font-weight:500;letter-spacing:0.5px;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.2s;border-radius:2px}
+.ncta:hover{background:var(--c)}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:60px;overflow:hidden}
+.hero-left{padding:5rem 3.5rem 4rem;display:flex;flex-direction:column;justify-content:center}
+.hero-kicker{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--c);font-weight:600;margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem}
+.hero-kicker::before{content:'';width:24px;height:0.5px;background:var(--c);display:block}
+.hero-promise{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.3vw,1.2rem);font-weight:500;color:var(--k);line-height:1.5;margin-bottom:1.75rem;max-width:480px;border-left:2px solid var(--c);padding-left:1rem}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,4vw,4rem);line-height:1.04;font-weight:400;color:var(--k);margin-bottom:1.5rem}
+.hero h1 em{font-style:italic;color:var(--c)}
+.hero-sub{font-size:0.9rem;color:var(--g);line-height:1.82;max-width:400px;margin-bottom:0.75rem;font-weight:300}
+.hero-mercati{font-size:0.68rem;color:var(--c);font-weight:500;margin-bottom:2.5rem;letter-spacing:0.3px;line-height:1.6}
+.hero-ctas{display:flex;align-items:center;gap:1.75rem;flex-wrap:wrap}
+.btn-p{background:var(--k);color:#fff;padding:0.9rem 2rem;font-size:0.76rem;font-weight:500;letter-spacing:0.5px;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;border-radius:2px;text-decoration:none;display:inline-block}
+.btn-p:hover{background:var(--c)}
+.btn-s{font-size:0.76rem;color:var(--k);display:inline-flex;align-items:center;gap:0.3rem;border-bottom:0.5px solid var(--k);padding-bottom:1px;transition:color 0.2s;text-decoration:none}
+.btn-s:hover{color:var(--c);border-color:var(--c)}
+
+/* HERO RIGHT */
+.hero-right{position:relative;overflow:hidden;background:#030810;min-height:500px}
+.hero-right-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0.35}
+#heroCanvas{position:absolute;top:0;left:0;width:100%;height:100%;display:block}
+.hero-vline{position:absolute;top:0;bottom:0;left:0;width:0.5px;background:linear-gradient(to bottom,transparent,rgba(0,122,133,0.5),transparent);z-index:3}
+.hero-overlay{position:absolute;bottom:2.5rem;left:2.5rem;z-index:3}
+.hero-overlay-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:#fff;font-style:italic;line-height:1.25}
+.hero-overlay-sub{font-size:0.58rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:0.5rem}
+
+/* FRANJA */
+.franja{background:var(--c);padding:1.6rem 3rem;display:flex;gap:0}
+.dato{flex:1;padding:0 2rem;border-right:0.5px solid rgba(255,255,255,0.18)}
+.dato:first-child{padding-left:0}
+.dato:last-child{border-right:none}
+.dato-n{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:#fff;line-height:1;display:block}
+.dato-l{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);display:block;margin-top:5px}
+
+.section{padding:5rem 3rem}
+.sbg{background:#fff}.swarm{background:var(--w)}.snero{background:#0D0D0D}
+.ey{display:flex;align-items:center;gap:0.65rem;margin-bottom:1rem}
+.ey::before{content:'';width:20px;height:0.5px;background:var(--c);display:block;flex-shrink:0}
+.ey span{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--c);font-weight:500}
+.ey.oro::before{background:var(--oro)}
+.ey.oro span{color:var(--oro)}
+.stitle{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,3vw,3rem);font-weight:400;line-height:1.1;margin-bottom:0.9rem}
+.stitle-w{color:#fff}
+.ssub{color:var(--g);font-size:0.9rem;line-height:1.8;max-width:520px;margin-bottom:2.5rem;font-weight:300}
+.ssub-w{color:rgba(255,255,255,0.45)}
+
+.diff-wrap{display:grid;grid-template-columns:1fr 1fr;border:0.5px solid var(--gl)}
+.diff-col{padding:2.5rem}
+.diff-col:first-child{border-right:0.5px solid var(--gl)}
+.diff-col.nos{background:var(--cp)}
+.diff-tag{font-size:0.56rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;padding:0.2rem 0.6rem;display:inline-block;margin-bottom:1rem;border-radius:2px}
+.tg{background:var(--gl);color:#888}.tc{background:var(--c);color:#fff}
+.diff-col h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;margin-bottom:1.2rem;line-height:1.2}
+.diff-list{list-style:none}
+.diff-list li{font-size:0.8rem;color:var(--g);padding:0.5rem 0;border-bottom:0.5px solid var(--gl);display:flex;gap:0.75rem;line-height:1.55}
+.diff-list li:last-child{border-bottom:none}
+.diff-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--c);flex-shrink:0;margin-top:7px}
+.diff-col.nos .diff-list li::before{background:var(--cd)}
+
+.serv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--gl);border:0.5px solid var(--gl)}
+.sc{background:#fff;padding:2.5rem;transition:background 0.2s;position:relative;overflow:hidden}
+.sc:hover{background:var(--cp)}
+.sc-num{font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:400;color:var(--gl);line-height:1;position:absolute;top:1rem;right:1.5rem;pointer-events:none}
+.sc-tipo{font-size:0.56rem;letter-spacing:2px;text-transform:uppercase;color:var(--c);font-weight:500;margin-bottom:0.75rem;display:block}
+.sc h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;margin-bottom:0.7rem;line-height:1.15;padding-right:3rem}
+.sc p{font-size:0.8rem;color:var(--g);line-height:1.75;margin-bottom:1.2rem;font-weight:300}
+.sc-list{list-style:none;margin-bottom:1.5rem}
+.sc-list li{font-size:0.76rem;color:#444;padding:0.28rem 0;border-bottom:0.5px solid var(--gl);display:flex;gap:0.6rem;line-height:1.5}
+.sc-list li:last-child{border-bottom:none}
+.sc-list li::before{content:'—';color:var(--oro);flex-shrink:0}
+.sc-link{font-size:0.7rem;color:var(--c);display:inline-flex;align-items:center;gap:0.3rem;border-bottom:0.5px solid var(--c);padding-bottom:1px;cursor:pointer;text-decoration:none;transition:color 0.2s}
+.sc-link:hover{color:var(--cd)}
+
+.forza{background:#0D0D0D;padding:2.5rem 3rem;display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;border-top:0.5px solid #222}
+.forza-badge{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--oro);border:0.5px solid var(--oro);padding:0.3rem 0.8rem;white-space:nowrap;border-radius:2px}
+.forza h4{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:#fff;margin-bottom:0.4rem;font-style:italic}
+.forza p{font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.72;font-weight:300}
+.forza-cta{font-size:0.68rem;color:var(--oro);border:0.5px solid var(--oro);padding:0.55rem 1.1rem;cursor:pointer;white-space:nowrap;border-radius:2px;text-decoration:none;display:inline-block;transition:all 0.2s}
+.forza-cta:hover{background:var(--oro);color:#0D0D0D}
+
+.mom-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.mc{padding:1.75rem;border-left:2px solid var(--c);background:#fff}
+.mc.alerta{border-left-color:var(--coral)}
+.mc.fondo{border-left-color:var(--oro)}
+.mc-tag{font-size:0.54rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:0.6rem;display:block}
+.tcc{color:var(--c)}.tca{color:var(--coral)}.tcf{color:var(--oro)}
+.mc h4{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;margin-bottom:0.45rem;line-height:1.2}
+.mc p{font-size:0.78rem;color:var(--g);line-height:1.72;font-weight:300}
+
+.sector-grid{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.5rem}
+.sp{border:0.5px solid var(--gl);padding:0.5rem 1rem;font-size:0.74rem;color:var(--k);transition:all 0.2s;border-radius:2px;cursor:default}
+.sp.star{background:var(--c);color:#fff;border-color:var(--c)}
+.sp:not(.star):hover{border-color:var(--c);color:var(--c)}
+
+/* GENTI CHAT FEED */
+.genti-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.chat-feed{position:relative;height:480px;overflow:hidden;border-radius:4px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08)}
+.chat-feed::before{content:'';position:absolute;top:0;left:0;right:0;height:70px;background:linear-gradient(to bottom,#0D0D0D,transparent);z-index:4;pointer-events:none}
+.chat-feed::after{content:'';position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(to top,#0D0D0D,transparent);z-index:4;pointer-events:none}
+.chat-stream{padding:1.25rem;display:flex;flex-direction:column;gap:0.85rem}
+.chat-bubble{display:flex;flex-direction:column;gap:0.22rem;opacity:0;transform:translateY(14px);transition:opacity 0.45s ease,transform 0.45s ease}
+.chat-bubble.show{opacity:1;transform:translateY(0)}
+.chat-bubble.out{align-items:flex-end}
+.chat-bubble.in{align-items:flex-start}
+.bubble-meta{font-size:0.54rem;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.28);display:flex;align-items:center;gap:0.35rem}
+.bubble-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.dot-p{background:var(--c)}.dot-a{background:var(--oro)}.dot-c{background:rgba(255,255,255,0.25)}
+.bubble-text{font-size:0.77rem;line-height:1.55;padding:0.5rem 0.8rem;max-width:85%;word-break:break-word}
+.in .bubble-text{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.72);border-radius:3px 10px 10px 3px}
+.out .bubble-text{background:var(--c);color:#fff;border-radius:10px 3px 3px 10px}
+.bubble-text.amber{background:rgba(184,145,58,0.18);color:rgba(255,215,100,0.88);border-radius:3px 10px 10px 3px}
+
+/* LATAM FLAGS */
+.latam-inner{text-align:center}
+.latam-inner .stitle,.latam-inner .ssub{text-align:center;margin-left:auto;margin-right:auto}
+.flags{display:flex;justify-content:center;align-items:flex-end;gap:2.5rem;flex-wrap:wrap;margin-top:2.5rem}
+.flag-item{display:flex;flex-direction:column;align-items:center;gap:0.5rem}
+.flag-emoji{font-size:1.8rem;line-height:1}
+.flag-item.main .flag-emoji{font-size:2.8rem}
+.flag-label{font-size:0.56rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--g);font-weight:500}
+.flag-item.main .flag-label{color:var(--c);font-weight:600;font-size:0.6rem}
+
+.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);border:0.5px solid var(--gl);margin-top:0.5rem}
+.paso{padding:2rem 1.5rem;border-right:0.5px solid var(--gl)}
+.paso:last-child{border-right:none}
+.paso-n{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:400;color:var(--c);opacity:0.2;line-height:1;margin-bottom:1rem;display:block}
+.paso h4{font-size:0.8rem;font-weight:600;margin-bottom:0.45rem;color:var(--k)}
+.paso p{font-size:0.74rem;color:var(--g);line-height:1.68;font-weight:300}
+
+.cta-sec{background:#0D0D0D;padding:6rem 3rem}
+.cta-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.cta-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,3.5vw,3.5rem);font-weight:400;color:#fff;line-height:1.1;margin-bottom:1.2rem}
+.cta-left h2 em{font-style:italic;color:var(--c)}
+.cta-left p{color:rgba(255,255,255,0.4);font-size:0.88rem;line-height:1.82;font-weight:300;max-width:340px}
+.cta-nota{font-size:0.62rem;color:rgba(255,255,255,0.2);margin-top:1.5rem;letter-spacing:1px;text-transform:uppercase;display:block;line-height:1.6}
+.form-wrap{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.1);padding:2rem}
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.4rem;font-weight:500}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.15);padding:0.7rem 0.9rem;font-size:0.82rem;color:#fff;font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;border-radius:2px}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--c)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,0.2)}
+.form-group select option{background:#1a1a1a;color:#fff}
+.form-group textarea{resize:vertical;min-height:90px}
+.form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn-form{width:100%;background:var(--c);color:#fff;padding:0.9rem;font-size:0.78rem;font-weight:600;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.2s;border-radius:2px;letter-spacing:0.5px;margin-top:0.5rem}
+.btn-form:hover{background:var(--cd)}
+
+.paloma{position:fixed;bottom:2rem;right:2rem;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:0.75rem}
+.paloma-bubble{background:#fff;border:0.5px solid var(--gl);padding:1rem 1.2rem;max-width:230px;border-radius:8px 8px 0 8px;box-shadow:0 4px 20px rgba(0,0,0,0.07)}
+.paloma-bubble p{font-size:0.76rem;color:var(--k);line-height:1.58;margin-bottom:0.45rem}
+.paloma-name{font-size:0.56rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--c);font-weight:600;display:block}
+.paloma-btn{background:var(--c);color:#fff;border:none;padding:0.72rem 1.4rem;font-size:0.74rem;font-weight:500;cursor:pointer;border-radius:24px;font-family:'Inter',sans-serif;transition:background 0.2s}
+.paloma-btn:hover{background:var(--cd)}
+
+footer{background:var(--w);border-top:0.5px solid var(--gl);padding:1.5rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:500;color:var(--k)}
+.footer-logo em{font-style:normal;color:var(--c)}
+.footer-links{display:flex;gap:2rem}
+.footer-links a{font-size:0.66rem;color:var(--g);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--c)}
+.footer-copy{font-size:0.63rem;color:#bbb}
+
+@media(max-width:900px){
+  .hero,.cta-inner,.genti-inner,.diff-wrap,.serv-grid,.mom-grid{grid-template-columns:1fr}
+  .hero-right{min-height:60vw}
+  .hero-vline{display:none}
+  .proc-grid{grid-template-columns:1fr 1fr}
+  .paso{border-right:none;border-bottom:0.5px solid var(--gl)}
+  .paso:last-child{border-bottom:none}
+  .forza{grid-template-columns:1fr;gap:1.25rem}
+  nav{padding:0 1.5rem}
+  .nav-links{display:none}
+  .section{padding:3.5rem 1.5rem}
+  .franja{padding:1.5rem;flex-wrap:wrap;gap:1.5rem}
+  .dato{border-right:none;padding:0}
+  footer{flex-direction:column;text-align:center;padding:1.5rem}
+  .form-grid2{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .hero-left{padding:5rem 1.5rem 3rem}
+  .proc-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body class="lit">
+
+<nav>
+  <a href="#" class="logo">Malecón<em>Lab</em></a>
+  <div class="nav-r">
+    <div class="lang-sw">
+      <button class="on" id="bit" onclick="setL('it')">IT</button>
+      <button id="bes" onclick="setL('es')">ES</button>
+    </div>
+    <div class="nav-links">
+      <a href="#servizi"><span data-it>Servizi</span><span data-es>Servicios</span></a>
+      <a href="#genti">GENTI</a>
+      <a href="#contatto"><span data-it>Contatto</span><span data-es>Contacto</span></a>
+    </div>
+    <button class="ncta" onclick="document.getElementById('contatto').scrollIntoView({behavior:'smooth'})">
+      <span data-it>Parla con noi</span>
+      <span data-es>Hablemos</span>
+    </button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-kicker">
+      <span data-it>Il tuo partner commerciale in America Latina</span>
+      <span data-es>Tu socio comercial en América Latina</span>
+    </div>
+    <div data-it>
+      <p class="hero-promise"><strong>700 milioni di persone vogliono conoscerti.</strong><br>Noi le presentiamo.</p>
+      <h1>Il mercato che<br>gli altri non osano<br>ancora entrare.<br><em>Noi ci siamo già.</em></h1>
+      <p class="hero-sub">Base italiana. Rete locale reale. Trent'anni costruendo mercati dall'interno.</p>
+      <p class="hero-mercati">Italia · Spagna · Portogallo · Venezuela · Colombia · Panama · R. Dominicana</p>
+    </div>
+    <div data-es>
+      <p class="hero-promise"><strong>700 millones de personas quieren conocerte.</strong><br>Nosotros las presentamos.</p>
+      <h1>El mercado que<br>los demás todavía<br>no se atreven a entrar.<br><em>Nosotros ya estamos.</em></h1>
+      <p class="hero-sub">Base italiana. Red local real. 30 años construyendo mercados desde adentro.</p>
+      <p class="hero-mercati">Italia · España · Portugal · Venezuela · Colombia · Panamá · R. Dominicana</p>
+    </div>
+    <div class="hero-ctas">
+      <a href="#contatto" class="btn-p">
+        <span data-it>Prenota una chiamata</span>
+        <span data-es>Agenda una llamada</span>
+      </a>
+      <a href="#servizi" class="btn-s">
+        <span data-it>Scopri i servizi →</span>
+        <span data-es>Ver los servicios →</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-vline"></div>
+    <div class="hero-overlay">
+      <div class="hero-overlay-title" data-it>La rete che<br>muove il mercato.</div>
+      <div class="hero-overlay-title" data-es>La red que<br>mueve el mercado.</div>
+      <div class="hero-overlay-sub">GENTI · agenti umani + IA</div>
+    </div>
+  </div>
+</section>
+
+<div class="franja">
+  <div class="dato">
+    <span class="dato-n">700M</span>
+    <span class="dato-l" data-it>persone nel mercato latinoamericano</span>
+    <span class="dato-l" data-es>personas en el mercado latinoamericano</span>
+  </div>
+  <div class="dato">
+    <span class="dato-n">30+</span>
+    <span class="dato-l" data-it>anni costruendo mercati</span>
+    <span class="dato-l" data-es>años construyendo mercados</span>
+  </div>
+  <div class="dato">
+    <span class="dato-n">P.IVA</span>
+    <span class="dato-l" data-it>italiana · fatturazione in euro</span>
+    <span class="dato-l" data-es>italiana · facturación en euros</span>
+  </div>
+  <div class="dato">
+    <span class="dato-n">7</span>
+    <span class="dato-l" data-it>mercati attivi in America Latina</span>
+    <span class="dato-l" data-es>mercados activos en América Latina</span>
+  </div>
+</div>
+
+<section class="section sbg">
+  <div class="ey"><span data-it>Il mercato oggi</span><span data-es>El mercado hoy</span></div>
+  <div data-it>
+    <h2 class="stitle">Chi opera da lontano.<br>Chi opera dall'interno.</h2>
+    <p class="ssub">Chi lavora dall'Europa conosce l'America Latina attraverso report e statistiche. Non sa come si costruisce fiducia, come si negozia, come si decide. Noi sì — perché ci siamo dentro da trent'anni.</p>
+  </div>
+  <div data-es>
+    <h2 class="stitle">Quien opera desde lejos.<br>Quien opera desde adentro.</h2>
+    <p class="ssub">Quien trabaja desde Europa conoce América Latina a través de informes. No sabe cómo se construye confianza, cómo se negocia, cómo se decide. Nosotros sí — porque llevamos 30 años adentro.</p>
+  </div>
+  <div class="diff-wrap">
+    <div class="diff-col">
+      <span class="diff-tag tg" data-it>Consulenti dall'esterno</span>
+      <span class="diff-tag tg" data-es>Consultores desde afuera</span>
+      <div data-it><h3>Consigliano da lontano</h3></div>
+      <div data-es><h3>Aconsejan desde lejos</h3></div>
+      <ul class="diff-list">
+        <li><span data-it>Nessuna struttura operativa in America Latina</span><span data-es>Sin estructura operativa en América Latina</span></li>
+        <li><span data-it>Non conoscono la cultura commerciale latinoamericana — come si costruisce fiducia, come si negozia, come si decide</span><span data-es>No conocen la cultura comercial latinoamericana — cómo se construye confianza, cómo se negocia, cómo se decide</span></li>
+        <li><span data-it>Analisi generiche da fonti globali</span><span data-es>Análisis genéricos de fuentes globales</span></li>
+        <li><span data-it>Operano su decine di mercati in simultanea</span><span data-es>Operan en decenas de mercados simultáneamente</span></li>
+        <li><span data-it>L'America Latina non è nel loro radar strategico</span><span data-es>América Latina no está en su radar estratégico</span></li>
+      </ul>
+    </div>
+    <div class="diff-col nos">
+      <span class="diff-tag tc">Malecón Lab</span>
+      <div data-it><h3>Operiamo dall'interno</h3></div>
+      <div data-es><h3>Operamos desde adentro</h3></div>
+      <ul class="diff-list">
+        <li><span data-it>Struttura operativa propria in America Latina</span><span data-es>Estructura operativa propia en América Latina</span></li>
+        <li><span data-it>Conosciamo la cultura commerciale latinoamericana — costruiamo fiducia, accompagniamo la trattativa, chiudiamo accordi</span><span data-es>Conocemos la cultura comercial latinoamericana — construimos confianza, acompañamos la negociación, cerramos acuerdos</span></li>
+        <li><span data-it>Base P.IVA italiana · fatturazione in euro · zero esposizione per il cliente</span><span data-es>Base P.IVA italiana · facturación en euros · cero exposición para el cliente</span></li>
+        <li><span data-it>Focus America Latina — non 20 mercati in contemporanea</span><span data-es>Foco América Latina — no 20 mercados en simultáneo</span></li>
+        <li><span data-it>Aziende con storia — non prime esportazioni</span><span data-es>Empresas con historia — no primeras exportaciones</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section swarm" id="servizi">
+  <div class="ey"><span data-it>I quattro servizi</span><span data-es>Los cuatro servicios</span></div>
+  <div data-it><h2 class="stitle">Entra come vuoi.<br>Ogni passo costruisce il successivo.</h2><p class="ssub">Il budget si costruisce insieme nella prima chiamata, dopo aver capito la tua azienda e il mercato specifico.</p></div>
+  <div data-es><h2 class="stitle">Entra como quieras.<br>Cada paso construye el siguiente.</h2><p class="ssub">El presupuesto se construye juntos en la primera llamada, después de entender tu empresa y el mercado específico.</p></div>
+  <div class="serv-grid">
+    <div class="sc"><span class="sc-num">01</span>
+      <span class="sc-tipo" data-it>Diagnosi · fee unico</span><span class="sc-tipo" data-es>Diagnóstico · fee único</span>
+      <div data-it><h3>Mappa Strategica</h3><p>Prima di investire in presenza, investi in certezza. Analizziamo la reale fattibilità del tuo prodotto nel mercato specifico che ti interessa.</p><ul class="sc-list"><li>Analisi settore e concorrenza locale</li><li>Canali distributivi e profilo del buyer ideale</li><li>Quadro normativo e contesto paese</li><li>Roadmap 90 giorni + sessione esecutiva 2h</li></ul></div>
+      <div data-es><h3>Mapa Estratégico</h3><p>Antes de invertir en presencia, invierte en certeza. Analizamos la viabilidad real de tu producto en el mercado específico que te interesa.</p><ul class="sc-list"><li>Análisis sector y competencia local</li><li>Canales de distribución y perfil del comprador</li><li>Marco regulatorio y contexto país</li><li>Hoja de ruta 90 días + sesión ejecutiva 2h</li></ul></div>
+      <a href="#contatto" class="sc-link"><span data-it>Scopri di più →</span><span data-es>Saber más →</span></a>
+    </div>
+    <div class="sc"><span class="sc-num">02</span>
+      <span class="sc-tipo" data-it>Retainer · min. 6 mesi</span><span class="sc-tipo" data-es>Retainer · mín. 6 meses</span>
+      <div data-it><h3>Ponte Commerciale</h3><p>Il tuo Direttore Commerciale in America Latina in outsourcing. Costruiamo presenza reale senza che tu debba assumere o rischiare da solo.</p><ul class="sc-list"><li>Prospecting attivo e gestione distributori</li><li>Qualificazione lead e affiancamento trattative</li><li>Rappresentanza in riunioni commerciali chiave</li><li>Report mensile con KPI nel tuo formato</li></ul></div>
+      <div data-es><h3>Puente Comercial</h3><p>Tu Director Comercial en América Latina en outsourcing. Construimos presencia real sin que tengas que contratar ni arriesgar solo.</p><ul class="sc-list"><li>Prospección activa y gestión de distribuidores</li><li>Calificación de leads y acompañamiento en negociaciones</li><li>Representación en reuniones comerciales clave</li><li>Reporte mensual con KPIs en tu formato</li></ul></div>
+      <a href="#contatto" class="sc-link"><span data-it>Scopri di più →</span><span data-es>Saber más →</span></a>
+    </div>
+    <div class="sc"><span class="sc-num">03</span>
+      <span class="sc-tipo" data-it>Full outsourcing · 12–24 mesi</span><span class="sc-tipo" data-es>Full outsourcing · 12–24 meses</span>
+      <div data-it><h3>Dipartimento BTB Completo</h3><p>Per chi ha deciso di entrare seriamente. Costruiamo e gestiamo il tuo dipartimento commerciale in America Latina — senza un tuo dipendente diretto nel paese.</p><ul class="sc-list"><li>CRM configurato e operato · pipeline locale</li><li>Team locale contrattualizzato e supervisionato</li><li>Script e materiali adattati al mercato</li><li>Dashboard esecutiva mensile</li></ul></div>
+      <div data-es><h3>Departamento BTB Completo</h3><p>Para quien decidió entrar en serio. Construimos y operamos tu departamento comercial en América Latina — sin un empleado directo tuyo en el país.</p><ul class="sc-list"><li>CRM configurado y operado · pipeline local</li><li>Equipo local contratado y supervisado</li><li>Scripts y materiales adaptados al mercado</li><li>Dashboard ejecutivo mensual</li></ul></div>
+      <a href="#contatto" class="sc-link"><span data-it>Scopri di più →</span><span data-es>Saber más →</span></a>
+    </div>
+    <div class="sc"><span class="sc-num">04</span>
+      <span class="sc-tipo" data-it>Progetto · fee + success</span><span class="sc-tipo" data-es>Proyecto · fee + success</span>
+      <div data-it><h3>Connessione di Ecosistema</h3><p>Identifichiamo, validiamo e mediamo la connessione con il partner locale ideale: distributore esclusivo, rappresentante, socio JV o agente multiprodotto.</p><ul class="sc-list"><li>Ricerca attiva e due diligence locale</li><li>Presentazione formale e qualificata</li><li>Affiancamento nella negoziazione iniziale</li></ul></div>
+      <div data-es><h3>Conexión de Ecosistema</h3><p>Identificamos, validamos y mediamos la conexión con el socio local ideal: distribuidor exclusivo, representante, socio JV o agente multiproducto.</p><ul class="sc-list"><li>Búsqueda activa y due diligence local</li><li>Presentación formal y cualificada</li><li>Acompañamiento en la negociación inicial</li></ul></div>
+      <a href="#contatto" class="sc-link"><span data-it>Scopri di più →</span><span data-es>Saber más →</span></a>
+    </div>
+  </div>
+  <div class="forza">
+    <span class="forza-badge">+ ADD-ON</span>
+    <div>
+      <div data-it><h4>Forza sul Campo</h4><p>Il tuo CRM si aggiorna dall'America Latina — senza che tu abbia un solo dipendente lì. Il nostro team opera con la tua identità di marca, reporta direttamente nel tuo sistema. Tu non paghi contributi, prestazioni sociali né contratti locali. Si aggiunge a qualsiasi servizio.</p></div>
+      <div data-es><h4>Forza sul Campo</h4><p>Tu CRM se actualiza desde América Latina — sin que tengas un solo empleado allá. Nuestro equipo opera con tu identidad de marca, reporta directamente en tu sistema. Tú no pagas prestaciones ni contratos locales. Se suma a cualquier servicio.</p></div>
+    </div>
+    <a href="#contatto" class="forza-cta"><span data-it>Scopri come →</span><span data-es>Saber cómo →</span></a>
+  </div>
+</section>
+
+<section class="section sbg">
+  <div class="ey"><span data-it>Il momento</span><span data-es>El momento</span></div>
+  <div data-it><h2 class="stitle">America Latina nel 2026:<br>il mercato che si risveglia.</h2><p class="ssub">700 milioni di consumatori, economie in crescita, e una domanda di prodotto italiano che non trova risposta locale. Chi arriva adesso con una struttura reale arriva con vantaggio strutturale.</p></div>
+  <div data-es><h2 class="stitle">América Latina en 2026:<br>el mercado que despierta.</h2><p class="ssub">700 millones de consumidores, economías en crecimiento, y una demanda de producto italiano que no encuentra respuesta local. Quien llega ahora con estructura real llega con ventaja estructural.</p></div>
+  <div class="mom-grid">
+    <div class="mc"><span class="mc-tag tcc" data-it>opportunità</span><span class="mc-tag tcc" data-es>oportunidad</span>
+      <div data-it><h4>Domanda di Made in Italy in crescita</h4><p>La classe media latinoamericana in espansione porta gusto europeo e capacità di acquisto in dollari. Il prodotto italiano di qualità non ha concorrente locale nei segmenti obiettivo.</p></div>
+      <div data-es><h4>Demanda de Made in Italy en crecimiento</h4><p>La clase media latinoamericana en expansión trae gusto europeo y capacidad de pago en dólares. El producto italiano de calidad no tiene competidor local en los segmentos objetivo.</p></div>
+    </div>
+    <div class="mc"><span class="mc-tag tcc" data-it>opportunità</span><span class="mc-tag tcc" data-es>oportunidad</span>
+      <div data-it><h4>Investimenti internazionali che si riattivano</h4><p>Nuovi cicli di apertura in Venezuela, Colombia e Panama segnalano opportunità concrete per chi è già posizionato. I primi a entrare definiscono le condizioni di mercato.</p></div>
+      <div data-es><h4>Inversión internacional que se reactiva</h4><p>Nuevos ciclos de apertura en Venezuela, Colombia y Panamá señalan oportunidades concretas para quien ya está posicionado. Los primeros en entrar definen las condiciones del mercado.</p></div>
+    </div>
+    <div class="mc alerta"><span class="mc-tag tca" data-it>gestione del rischio</span><span class="mc-tag tca" data-es>gestión de riesgo</span>
+      <div data-it><h4>Il mercato chiede chi è già dentro</h4><p>La complessità geopolitica e culturale non è un ostacolo per chi ha rete locale attiva. È il filtro che elimina chi arriva da solo. Noi siamo la differenza tra inciampare e atterrare.</p></div>
+      <div data-es><h4>El mercado exige quien ya esté adentro</h4><p>La complejidad geopolítica y cultural no es obstáculo para quien tiene red local activa. Es el filtro que elimina a quien llega solo. Nosotros somos la diferencia entre tropezar y aterrizar.</p></div>
+    </div>
+    <div class="mc fondo"><span class="mc-tag tcf" data-it>finanziamento pubblico</span><span class="mc-tag tcf" data-es>financiación pública</span>
+      <div data-it><h4>Fondi italiani per l'America Latina</h4><p>Il governo italiano finanzia a tasso quasi zero l'ingresso delle PMI in America Latina, con un contributo a fondo perduto fino al 20% del progetto. Finestra aperta fino al 31 dicembre 2026.</p></div>
+      <div data-es><h4>Fondos italianos para América Latina</h4><p>El gobierno italiano financia a tasa casi cero la entrada de las PMI en América Latina, con un aporte a fondo perdido de hasta el 20% del proyecto. Ventana abierta hasta el 31 de diciembre de 2026.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section swarm">
+  <div class="ey"><span data-it>Settori target</span><span data-es>Sectores objetivo</span></div>
+  <div data-it><h2 class="stitle">Dove il tuo prodotto<br>racconta una storia che vale.</h2><p class="ssub">Cerchiamo aziende con una storia da raccontare — perché in America Latina il prodotto si vende anche con quello che c'è dietro.</p></div>
+  <div data-es><h2 class="stitle">Donde tu producto<br>cuenta una historia que vale.</h2><p class="ssub">Buscamos empresas con una historia que contar — porque en América Latina el producto se vende también con lo que hay detrás.</p></div>
+  <div class="sector-grid">
+    <div class="sp star"><span data-it>Metalmeccanica e macchinari industriali</span><span data-es>Metalmecánica y maquinaria industrial</span></div>
+    <div class="sp star"><span data-it>Vini e prodotti alimentari DOC / DOP</span><span data-es>Vinos y productos alimentarios DOC / DOP</span></div>
+    <div class="sp star"><span data-it>Moda e accessori premium</span><span data-es>Moda y accesorios premium</span></div>
+    <div class="sp"><span data-it>Macchinari per il settore petrolifero</span><span data-es>Maquinaria para el sector petrolero</span></div>
+    <div class="sp"><span data-it>Ricambi industriali e componentistica</span><span data-es>Repuestos industriales y componentes</span></div>
+    <div class="sp"><span data-it>Attrezzature medicali</span><span data-es>Equipamiento médico</span></div>
+    <div class="sp"><span data-it>Costruzioni e infrastrutture</span><span data-es>Construcción e infraestructura</span></div>
+    <div class="sp"><span data-it>Cosmetica e farmaceutica</span><span data-es>Cosmética y farmacéutica</span></div>
+  </div>
+</section>
+
+<section class="section snero" id="genti">
+  <div class="ey oro"><span>GENTI</span></div>
+  <div class="genti-inner">
+    <div>
+      <div data-it>
+        <h2 class="stitle stitle-w">GENTI = Agenti IA<br>+ Agenti Umani.<br><em style="color:var(--c)">Il tuo brand.<br>Un agente. Un mercato.</em></h2>
+        <p class="ssub ssub-w">Professionisti con esperienza reale sul campo, potenziati dall'intelligenza artificiale. Non robot che sostituiscono le persone — persone che usano la tecnologia per fare di più, meglio, più velocemente. Tutti reportano direttamente al tuo sistema. Tu non paghi strutture né contratti locali in America Latina.</p>
+      </div>
+      <div data-es>
+        <h2 class="stitle stitle-w">GENTI = Agentes IA<br>+ Agentes Humanos.<br><em style="color:var(--c)">Tu marca.<br>Un agente. Un mercado.</em></h2>
+        <p class="ssub ssub-w">Profesionales con experiencia real en campo, potenciados por inteligencia artificial. No robots que reemplazan personas — personas que usan la tecnología para hacer más, mejor y más rápido. Todos reportan directamente a tu sistema. Tú no pagas estructuras ni contratos locales en América Latina.</p>
+      </div>
+    </div>
+    <div class="chat-feed">
+      <div class="chat-stream" id="chatStream"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section sbg">
+  <div class="ey"><span data-it>Dove operiamo</span><span data-es>Dónde operamos</span></div>
+  <div class="latam-inner">
+    <div data-it><h2 class="stitle">Sette mercati.<br>Un solo interlocutore.</h2><p class="ssub">Base italiana, presenza locale reale. Lavoriamo nel mercato che ti serve — senza che tu debba gestire sette strutture diverse.</p></div>
+    <div data-es><h2 class="stitle">Siete mercados.<br>Un solo interlocutor.</h2><p class="ssub">Base italiana, presencia local real. Trabajamos en el mercado que necesitas — sin que tengas que gestionar siete estructuras distintas.</p></div>
+    <div class="flags">
+      <div class="flag-item main"><div class="flag-emoji">🇻🇪</div><div class="flag-label" data-it>Venezuela</div><div class="flag-label" data-es>Venezuela</div></div>
+      <div class="flag-item"><div class="flag-emoji">🇨🇴</div><div class="flag-label">Colombia</div></div>
+      <div class="flag-item"><div class="flag-emoji">🇲🇽</div><div class="flag-label">México</div></div>
+      <div class="flag-item"><div class="flag-emoji">🇵🇦</div><div class="flag-label">Panamá</div></div>
+      <div class="flag-item"><div class="flag-emoji">🇩🇴</div><div class="flag-label">R. Dominicana</div></div>
+      <div class="flag-item"><div class="flag-emoji">🇪🇸</div><div class="flag-label">España</div></div>
+      <div class="flag-item"><div class="flag-emoji">🇵🇹</div><div class="flag-label">Portugal</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section swarm">
+  <div class="ey"><span data-it>Come lavoriamo</span><span data-es>Cómo trabajamos</span></div>
+  <div data-it><h2 class="stitle">Quattro fasi.<br>La prima è una conversazione.</h2><p class="ssub">Il budget si costruisce insieme nella prima chiamata. Una conversazione diretta per capire se siamo il partner giusto per te.</p></div>
+  <div data-es><h2 class="stitle">Cuatro fases.<br>La primera es una conversación.</h2><p class="ssub">El presupuesto se construye juntos en la primera llamada. Una conversación directa para saber si somos el socio adecuado para ti.</p></div>
+  <div class="proc-grid">
+    <div class="paso"><span class="paso-n">1</span><div data-it><h4>Chiamata esplorativa</h4><p>Capiamo la tua azienda, il prodotto e il mercato che ti interessa. 30 minuti. Senza impegno.</p></div><div data-es><h4>Llamada exploratoria</h4><p>Entendemos tu empresa, el producto y el mercado que te interesa. 30 minutos. Sin compromiso.</p></div></div>
+    <div class="paso"><span class="paso-n">2</span><div data-it><h4>Proposta su misura</h4><p>Definiamo il servizio giusto e costruiamo insieme il budget per il tuo settore e mercato.</p></div><div data-es><h4>Propuesta a medida</h4><p>Definimos el servicio correcto y construimos juntos el presupuesto para tu sector y mercado.</p></div></div>
+    <div class="paso"><span class="paso-n">3</span><div data-it><h4>Operazione sul campo</h4><p>Entriamo nel mercato con la tua identità di marca. Zero esposizione diretta per te.</p></div><div data-es><h4>Operación en campo</h4><p>Entramos al mercado con tu identidad de marca. Cero exposición directa para ti.</p></div></div>
+    <div class="paso"><span class="paso-n">4</span><div data-it><h4>KPI nel tuo CRM</h4><p>Aggiornamenti mensili nel tuo sistema. Decidi tu come e dove crescere.</p></div><div data-es><h4>KPIs en tu CRM</h4><p>Actualizaciones mensuales en tu sistema. Tú decides cómo y dónde crecer.</p></div></div>
+  </div>
+</section>
+
+<section class="cta-sec" id="contatto">
+  <div class="cta-inner">
+    <div class="cta-left">
+      <div data-it><h2>700 milioni di persone.<br><em>Inizia da una chiamata.</em></h2><p>Se la tua azienda ha il prodotto e la storia, noi portiamo l'accesso. Parliamoci — senza impegno.</p></div>
+      <div data-es><h2>700 millones de personas.<br><em>Empieza con una llamada.</em></h2><p>Si tu empresa tiene el producto y la historia, nosotros ponemos el acceso. Hablemos — sin compromiso.</p></div>
+      <span class="cta-nota" data-it>Prima chiamata · 30 min · con Karolina · risposta entro 24h</span>
+      <span class="cta-nota" data-es>Primera llamada · 30 min · con Karolina · respuesta en 24h</span>
+    </div>
+    <div class="form-wrap">
+      <div class="form-grid2">
+        <div class="form-group"><label data-it>Nome e cognome</label><label data-es>Nombre y apellido</label><input type="text" placeholder="Mario Rossi"></div>
+        <div class="form-group"><label data-it>Azienda</label><label data-es>Empresa</label><input type="text" placeholder="Rossi Srl"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="mario@rossisrl.it"></div>
+      <div class="form-group">
+        <label data-it>Mercato di interesse</label><label data-es>Mercado de interés</label>
+        <select>
+          <option value="">Venezuela</option>
+          <option value="">Colombia</option>
+          <option value="">México</option>
+          <option value="">Panamá</option>
+          <option value="">República Dominicana</option>
+          <option value="">España / Portugal</option>
+          <option value="" data-it>Altro / più mercati</option>
+          <option value="" data-es>Otro / varios mercados</option>
+        </select>
+      </div>
+      <div class="form-group"><label data-it>Settore</label><label data-es>Sector</label>
+        <select>
+          <option value="" data-it>Seleziona il tuo settore</option>
+          <option value="" data-es>Selecciona tu sector</option>
+          <option>Metalmeccanica / Maquinaria</option>
+          <option>Vini / Alimentare</option>
+          <option>Moda / Accessori</option>
+          <option>Macchinari petroliferi / Ricambi</option>
+          <option>Medicale</option>
+          <option data-it>Altro</option>
+          <option data-es>Otro</option>
+        </select>
+      </div>
+      <div class="form-group"><label data-it>Il tuo progetto in due righe</label><label data-es>Tu proyecto en dos líneas</label><textarea placeholder="..."></textarea></div>
+      <button class="btn-form" id="fBtn" onclick="handleForm()">
+        <span data-it>Invia e prenota la chiamata →</span>
+        <span data-es>Enviar y agendar la llamada →</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="paloma">
+  <div class="paloma-bubble">
+    <p data-it>Ciao, sono <strong>PALOMA</strong>. Posso aiutarti a trovare il tuo mercato in America Latina.</p>
+    <p data-es>Hola, soy <strong>PALOMA</strong>. Puedo ayudarte a encontrar tu mercado en América Latina.</p>
+    <span class="paloma-name">PALOMA · Malecón Lab</span>
+  </div>
+  <button class="paloma-btn" onclick="document.getElementById('contatto').scrollIntoView({behavior:'smooth'})">
+    <span data-it>Parla con noi →</span>
+    <span data-es>Habla con nosotros →</span>
+  </button>
+</div>
+
+<footer>
+  <a href="#" class="footer-logo">Malecón<em>Lab</em></a>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/company/maleconlab" target="_blank">LinkedIn</a>
+    <a href="mailto:info@maleconlab.com">info@maleconlab.com</a>
+    <a href="#">Privacy</a>
+  </div>
+  <div class="footer-copy">© 2026 · P.IVA italiana · <span data-it>Consulenza Italia–Latam</span><span data-es>Consultoría Italia–Latam</span></div>
+</footer>
+
+<script>
+function setL(l){
+  document.body.className='l'+l;
+  document.getElementById('bit').className=l==='it'?'on':'';
+  document.getElementById('bes').className=l==='es'?'on':'';
+}
+setL('it');
+
+function handleForm(){
+  const btn=document.getElementById('fBtn');
+  btn.innerHTML='✓ Grazie — ti contattiamo entro 24h';
+  btn.style.background='#2D9B6F';
+  setTimeout(()=>window.open('https://scheduler.zoom.us/k-uet8ly/30-min-con-malecon-lab','_blank'),800);
+}
+
+/* ── HERO CANVAS — rete di nodi con linee visibili ── */
+window.addEventListener('load',function(){
+  const canvas=document.getElementById('heroCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H,nodes=[],stars=[],t=0,animId;
+
+  /* Nodi fissi che rappresentano le città / agenti */
+  const NDEFS=[
+    {rx:.50,ry:.42,type:'crm',label:'CRM'},
+    {rx:.20,ry:.18,type:'human'},{rx:.38,ry:.22,type:'human'},
+    {rx:.65,ry:.20,type:'human'},{rx:.78,ry:.38,type:'human'},
+    {rx:.70,ry:.62,type:'human'},{rx:.40,ry:.72,type:'human'},
+    {rx:.15,ry:.55,type:'human'},{rx:.28,ry:.68,type:'human'},
+    {rx:.55,ry:.80,type:'ia'},{rx:.82,ry:.58,type:'ia'},
+    {rx:.10,ry:.35,type:'ia'},{rx:.60,ry:.50,type:'ia'},
+    {rx:.30,ry:.44,type:'ia'},{rx:.72,ry:.78,type:'ia'},
+    {rx:.45,ry:.30,type:'human'},{rx:.85,ry:.22,type:'human'},
+    {rx:.18,ry:.78,type:'ia'},{rx:.50,ry:.12,type:'human'},
+  ];
+
+  function resize(){
+    W=canvas.parentElement.offsetWidth||600;
+    H=canvas.parentElement.offsetHeight||window.innerHeight;
+    canvas.width=Math.round(W*devicePixelRatio);
+    canvas.height=Math.round(H*devicePixelRatio);
+    canvas.style.width=W+'px';
+    canvas.style.height=H+'px';
+    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    // estrellas de fondo
+    stars=[];
+    for(let i=0;i<180;i++) stars.push({
+      x:Math.random()*W,y:Math.random()*H,
+      r:Math.random()*.7+.15,
+      a:Math.random()*.45+.08,
+      tw:Math.random()*2.5+.8,ph:Math.random()*6
+    });
+    // nodos con posición calculada
+    nodes=NDEFS.map(n=>({
+      ...n,
+      x:n.rx*W,y:n.ry*H,
+      ph:Math.random()*Math.PI*2,
+      vx:(Math.random()-.5)*.25,
+      vy:(Math.random()-.5)*.25,
+    }));
+  }
+
+  const MAX_DIST_NORMAL=180;
+  const MAX_DIST_CRM=260;
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t+=.007;
+
+    /* fondo */
+    const bg=ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,'#030a18');bg.addColorStop(.6,'#040e20');bg.addColorStop(1,'#020608');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+    /* estrellas */
+    stars.forEach(s=>{
+      const fl=Math.sin(t*s.tw+s.ph)*.1+s.a;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${fl})`;ctx.fill();
+    });
+
+    const crm=nodes.find(n=>n.type==='crm');
+
+    /* ── LÍNEAS DE CONEXIÓN entre nodos cercanos ── */
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a=nodes[i],b=nodes[j];
+        const dx=a.x-b.x,dy=a.y-b.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        const isCRM=a.type==='crm'||b.type==='crm';
+        const maxD=isCRM?MAX_DIST_CRM:MAX_DIST_NORMAL;
+        if(dist<maxD){
+          const alpha=(1-dist/maxD);
+          if(isCRM){
+            /* línea CRM — cian visible y más gruesa */
+            ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+            ctx.strokeStyle=`rgba(0,200,220,${alpha*.65})`;
+            ctx.lineWidth=alpha*1.8;ctx.setLineDash([]);ctx.stroke();
+            /* partícula animada hacia el centro */
+            const isIA=a.type==='ia'||b.type==='ia';
+            const pr=((t*.5+(i+j)*.15)%1);
+            const px=a.x+(b.x-a.x)*pr,py=a.y+(b.y-a.y)*pr;
+            ctx.beginPath();ctx.arc(px,py,2.2,0,Math.PI*2);
+            ctx.fillStyle=isIA?'rgba(184,145,58,.95)':'rgba(0,230,255,.95)';ctx.fill();
+          } else {
+            /* línea entre nodos normales — blanca suave */
+            ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+            ctx.strokeStyle=`rgba(255,255,255,${alpha*.12})`;
+            ctx.lineWidth=.4;ctx.setLineDash([3,5]);ctx.stroke();
+            ctx.setLineDash([]);
+          }
+        }
+      }
+    }
+
+    /* ── NODOS ── */
+    nodes.forEach(n=>{
+      n.ph+=.015;
+      const p=Math.sin(n.ph)*.15+.85;
+
+      if(n.type==='crm'){
+        /* anelli concentrici che pulsano a velocità diverse — nodo di unione */
+        const p1=Math.sin(t*1.1+0)*0.18+0.82;
+        const p2=Math.sin(t*0.7+1.5)*0.18+0.82;
+        const p3=Math.sin(t*0.4+3.0)*0.18+0.82;
+        /* anello esterno — lento */
+        ctx.beginPath();ctx.arc(n.x,n.y,52*p3,0,Math.PI*2);
+        ctx.strokeStyle='rgba(0,180,200,0.08)';ctx.lineWidth=1;ctx.stroke();
+        /* anello medio */
+        ctx.beginPath();ctx.arc(n.x,n.y,36*p2,0,Math.PI*2);
+        ctx.strokeStyle='rgba(0,180,200,0.15)';ctx.lineWidth=1.2;ctx.stroke();
+        /* anello interno */
+        ctx.beginPath();ctx.arc(n.x,n.y,22*p1,0,Math.PI*2);
+        ctx.strokeStyle='rgba(0,200,220,0.25)';ctx.lineWidth=1.5;ctx.stroke();
+        /* fill interno gradiente */
+        const grd=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,16);
+        grd.addColorStop(0,'rgba(0,230,255,0.55)');
+        grd.addColorStop(0.5,'rgba(0,150,180,0.35)');
+        grd.addColorStop(1,'rgba(0,100,130,0.1)');
+        ctx.beginPath();ctx.arc(n.x,n.y,16,0,Math.PI*2);
+        ctx.fillStyle=grd;ctx.fill();
+        /* nucleo solido */
+        ctx.beginPath();ctx.arc(n.x,n.y,7,0,Math.PI*2);
+        ctx.fillStyle='rgba(0,230,255,0.95)';ctx.fill();
+      } else if(n.type==='ia'){
+        ctx.beginPath();ctx.arc(n.x,n.y,8*p,0,Math.PI*2);
+        ctx.fillStyle='rgba(184,145,58,.1)';ctx.fill();
+        ctx.beginPath();ctx.arc(n.x,n.y,3.5,0,Math.PI*2);
+        ctx.fillStyle=`rgba(184,145,58,${.85*p})`;ctx.fill();
+      } else {
+        ctx.beginPath();ctx.arc(n.x,n.y,8*p,0,Math.PI*2);
+        ctx.fillStyle='rgba(0,190,220,.08)';ctx.fill();
+        ctx.beginPath();ctx.arc(n.x,n.y,3.5,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,255,255,${.65*p})`;ctx.fill();
+      }
+
+      /* movimiento suave (no CRM) */
+      if(n.type!=='crm'){
+        n.x+=n.vx;n.y+=n.vy;
+        if(n.x<20||n.x>W-20)n.vx*=-1;
+        if(n.y<20||n.y>H-20)n.vy*=-1;
+      }
+    });
+
+    animId=requestAnimationFrame(draw);
+  }
+
+  function init(){
+    if(animId)cancelAnimationFrame(animId);
+    resize();draw();
+  }
+  window.addEventListener('resize',()=>{cancelAnimationFrame(animId);setTimeout(init,80)});
+  setTimeout(init,100);
+});
+
+/* ── CHAT FEED GENTI ── */
+window.addEventListener('load',function(){
+  const stream=document.getElementById('chatStream');
+  if(!stream)return;
+
+  const MSGS=[
+    {r:'in',ag:'PALOMA',dc:'dot-p',lang:'IT',text:'Buongiorno. Siete alla ricerca di un distributore di vini DOC in Venezuela?'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'IT',text:'Sì, produciamo vini toscani. Vogliamo entrare nel mercato latinoamericano.'},
+    {r:'in',ag:'PALOMA',dc:'dot-p',lang:'IT',text:'Abbiamo contatti diretti con i principali importatori di Caracas e Bogotà. Fissiamo una chiamata?'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'IT',text:'Perfetto. Quando siete disponibili?'},
+    {r:'in',ag:'PALOMA',dc:'dot-p',lang:'IT',text:'Domani mattina alle 10 o giovedì pomeriggio. Cosa preferite?'},
+    {r:'in',ag:'Agente VE',dc:'dot-a',lang:'ES',text:'Hola, somos el equipo Venezuela. ¿Buscan repuestos para maquinaria industrial de cafeterías?'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'ES',text:'Sí, piezas para equipos de hostelería de alta gama. ¿Los consiguen?'},
+    {r:'in',ag:'Agente VE',dc:'dot-a',lang:'ES',text:'Claro. Tenemos proveedores certificados en Caracas. Les enviamos catálogo esta semana.'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'ES',text:'Excelente. ¿Cuánto tiempo tarda el primer envío?'},
+    {r:'in',ag:'Agente VE',dc:'dot-a',lang:'ES',text:'Entre 15 y 20 días hábiles. Lo coordinamos todo desde aquí.'},
+    {r:'in',ag:'Agente CO',dc:'dot-a',lang:'IT',text:'Ho un cliente a Bogotà interessato alla vostra linea moda premium.'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'IT',text:'Ottimo. Quando possiamo presentare la collezione?'},
+    {r:'in',ag:'Agente CO',dc:'dot-a',lang:'IT',text:'Settimana prossima. Vi confermo data e ora entro domani.'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'IT',text:'Perfetto. Mandiamo il lookbook in anticipo?'},
+    {r:'in',ag:'Agente CO',dc:'dot-a',lang:'IT',text:'Sì, meglio. Lo traduco io per il cliente locale.'},
+    {r:'in',ag:'PALOMA',dc:'dot-p',lang:'ES',text:'Buenos días. ¿Buscan distribuidores para maquinaria metalmecánica en Colombia?'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'ES',text:'Sí, somos fabricantes italianos. ¿Tienen contactos locales?'},
+    {r:'in',ag:'PALOMA',dc:'dot-p',lang:'ES',text:'Tenemos red activa en Medellín y Bogotá. ¿Agendamos una llamada exploratoria?'},
+    {r:'in',ag:'Agente MX',dc:'dot-a',lang:'ES',text:'Tenemos un importador en Ciudad de México interesado en maquinaria para perforación.'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'ES',text:'¿Cuántas unidades pueden gestionar al trimestre?'},
+    {r:'in',ag:'Agente MX',dc:'dot-a',lang:'ES',text:'Hasta 50 unidades. Te mando el perfil completo hoy mismo.'},
+    {r:'in',ag:'PALOMA',dc:'dot-p',lang:'IT',text:'Buonasera. Cercate un partner per il settore farmaceutico in Panama?'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'IT',text:'Sì, vogliamo distribuire integratori e cosmetici. Avete contatti?'},
+    {r:'in',ag:'PALOMA',dc:'dot-p',lang:'IT',text:'Sì — distributori certificati e canali farmacia attivi. Vi colleghiamo subito.'},
+    {r:'in',ag:'Agente VE',dc:'dot-a',lang:'ES',text:'Hola. ¿Su empresa produce aceites alimentarios DOC?'},
+    {r:'out',ag:'Cliente',dc:'dot-c',lang:'ES',text:'Sí, aceite de oliva extra virgen del sur de Italia.'},
+    {r:'in',ag:'Agente VE',dc:'dot-a',lang:'ES',text:'Perfecto. Hay demanda creciente en el segmento premium de Caracas. Conectamos esta semana.'},
+  ];
+
+  let idx=0;
+  const feedEl=stream.parentElement;
+
+  function addMsg(){
+    const m=MSGS[idx%MSGS.length];idx++;
+    const div=document.createElement('div');
+    div.className='chat-bubble '+(m.r==='out'?'out':'in');
+    div.innerHTML=`
+      <div class="bubble-meta">
+        <div class="bubble-dot ${m.dc}"></div>
+        ${m.ag} <span style="opacity:.35">·</span> ${m.lang}
+      </div>
+      <div class="bubble-text${m.r==='in'&&m.ag!=='PALOMA'?' amber':''}">${m.text}</div>`;
+    stream.appendChild(div);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>div.classList.add('show')));
+    /* scroll suave */
+    feedEl.scrollTo({top:stream.scrollHeight,behavior:'smooth'});
+    /* rimuovi i vecchi */
+    const all=stream.querySelectorAll('.chat-bubble');
+    if(all.length>16){
+      all[0].style.transition='opacity .35s';
+      all[0].style.opacity='0';
+      setTimeout(()=>all[0].remove(),350);
+    }
+  }
+
+  /* prima sequenza rapida */
+  [0,1,2,3,4].forEach((_,i)=>setTimeout(addMsg,800+i*1000));
+  /* poi loop continuo */
+  setInterval(addMsg,2600);
+});
+</script>
+</body>
+</html>
